@@ -10,12 +10,15 @@ const MongoStore = require("connect-mongo")(session);
 const BlogRoutes = require("./Routes/BlogRoutes");
 const UserRoutes = require("./Routes/UserRoutes");
 require("./Config/passport")(passport);
+
 const app = express();
+const PORT = process.env.PORT || 8080;
 
 mongoose.connect("mongodb://localhost/wikis", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
+  useCreateIndex: true,
 });
 const db = mongoose.connection;
 
@@ -62,12 +65,6 @@ app.use((req, res, next) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-//MORGAN
-
-// app.use((req, res, next) => {
-//   console.log(req.method);
-//   next();
-// });
 app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -78,5 +75,6 @@ app.set("view engine", "ejs");
 app.use("/api/user", UserRoutes);
 app.use("/api/blogs", BlogRoutes);
 
-const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server listening on PORT ${PORT}`));
+
+module.exports = app;
