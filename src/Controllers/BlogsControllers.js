@@ -47,7 +47,6 @@ module.exports = {
 
     const { AuthorID, Content, Title } = req.body;
 
-
     try {
       await User.findOne({ _id: AuthorID }, (err, details) => {
         if (err) Helper.setError(500, err);
@@ -65,7 +64,6 @@ module.exports = {
           if (err) {
             Helper.setError(500, err);
           } else {
-
             Helper.setSuccess(201, "Blog added", blog);
           }
           return Helper.send(res);
