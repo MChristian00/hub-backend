@@ -1,10 +1,9 @@
-const Joi = require("joi");
-
+import { object, string } from "joi";
 class Validate {
   static async blogAddValidate(req, res, next) {
-    const schema = Joi.object().keys({
-      id: Joi.string().required(),
-      BlogAuthor: Joi.string().min(3).required(),
+    const schema = object().keys({
+      id: string().required(),
+      BlogAuthor: string().min(3).required(),
     });
     schema.validate(req.body, (err) => {
       console.log("before returning");
@@ -17,4 +16,4 @@ class Validate {
   }
 }
 
-module.exports = Validate;
+export default Validate;

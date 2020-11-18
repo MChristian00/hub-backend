@@ -1,27 +1,37 @@
-const express = require("express");
-const Validator = require("../Middleware/Validation/BlogsValidation");
-const BlogControllers = require("../Controllers/BlogsControllers");
+import { Router } from "express";
+import Validator from "../Middleware/Validation/BlogsValidation";
+import {
+  allBlogs,
+  oneBlog,
+  userBlogs,
+  addBlog,
+  deleteBlog,
+  addComment,
+  viewBlog,
+  favBlog,
+  likeBlog,
+} from "../Controllers/BlogsControllers";
 
-const router = express.Router();
+const router = Router();
 
-router.get("/", BlogControllers.allBlogs);
+router.get("/", allBlogs);
 
-router.get("/:id", BlogControllers.oneBlog);
+router.get("/:id", oneBlog);
 
-router.get("/user/:id", BlogControllers.userBlogs);
+router.get("/user/:id", userBlogs);
 
-router.post("/add", BlogControllers.addBlog);
+router.post("/add", addBlog);
 
 // router.put("/:id", BlogControllers.updateBlog);
 
-router.delete("/:id", BlogControllers.deleteBlog);
+router.delete("/:id", deleteBlog);
 
-router.put("/comment", BlogControllers.addComment);
+router.put("/comment", addComment);
 
-router.put("/view/:ID", BlogControllers.viewBlog);
+router.put("/view/:ID", viewBlog);
 
-router.put("/fav", BlogControllers.favBlog);
+router.put("/fav", favBlog);
 
-router.put("/like", BlogControllers.likeBlog);
+router.put("/like", likeBlog);
 
-module.exports = router;
+export default router;

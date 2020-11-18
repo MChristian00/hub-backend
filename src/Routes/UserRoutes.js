@@ -1,7 +1,7 @@
 const express = require("express");
+const passport = require("passport");
 const UsersControllers = require("../Controllers/UsersControllers");
 const UserValidate = require("../Middleware/Validation/UserValidation");
-const passport = require("passport");
 const tokengen = require("../Helpers/Helpers");
 const Helpers = require("../Helpers/Helpers");
 

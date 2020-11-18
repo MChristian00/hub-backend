@@ -1,8 +1,8 @@
-const LocalStrategy = require("passport-local").Strategy;
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const FacebookStrategy = require("passport-facebook").Strategy;
-const bcrypt = require("bcryptjs");
-const User = require("../Database/Models/User");
+import { Strategy as LocalStrategy } from "passport-local";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import { Strategy as FacebookStrategy } from "passport-facebook";
+import { compare } from "bcryptjs";
+import User from "../Database/Models/User";
 
 const {
   GOOGLE_CLIENT_ID,
@@ -11,13 +11,13 @@ const {
   FACEBOOK_CLIENT_SECRET,
 } = process.env;
 
-module.exports = (passport) => {
+export default (passport) => {
   passport.use(
     new LocalStrategy(async (Email, Password, done) => {
-      await User.findOne({ Email: Email }, (err, user) => {
+      await User.findOne({ Email }, (err, user) => {
         if (err) return done(err);
         if (!user) return done(null, false, { message: "No User found" });
-        bcrypt.compare(Password, user.Password, (err, isValid) => {
+        compare(Password, user.Password, (err, isValid) => {
           if (err) return done(err);
           if (isValid) return done(null, user);
           return done(null, false, { message: "Incorrect password" });
