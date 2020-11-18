@@ -24,7 +24,6 @@ module.exports = {
         if (err) {
           Helper.setError(500, err);
         } else {
-          console.log(user);
           Helper.setSuccess(201, "User added", user);
         }
         return Helper.send(res);
