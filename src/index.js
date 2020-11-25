@@ -10,6 +10,7 @@ const MongoStore = require("connect-mongo")(session);
 const BlogRoutes = require("./Routes/BlogRoutes");
 const UserRoutes = require("./Routes/UserRoutes");
 require("./Config/passport")(passport);
+require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -33,8 +34,8 @@ db.on("error", (err) => {
 app.use(
   session({
     secret: "mYsECretKEy",
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     cookie: {
       // secure: true,
       expires: 10000,
@@ -62,9 +63,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -72,7 +70,10 @@ app.use(express.static(path.join(__dirname + "/Public")));
 app.set("views", path.join(__dirname + "/Views"));
 app.set("view engine", "ejs");
 
-app.use("/api/user", UserRoutes);
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use("/api/auth", UserRoutes);
 app.use("/api/blogs", BlogRoutes);
 
 app.listen(PORT, () => console.log(`Server listening on PORT ${PORT}`));
