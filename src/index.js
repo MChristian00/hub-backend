@@ -1,27 +1,28 @@
-const path = require("path");
-const express = require("express");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const passport = require("passport");
-const session = require("express-session");
+import { join } from "path";
+import express, { json } from "express";
+import { urlencoded } from "body-parser";
+import cookieParser from "cookie-parser";
+import { connect, connection } from "mongoose";
+import cors from "cors";
+import passport from "passport";
+import session from "express-session";
+import BlogRoutes from "./Routes/BlogRoutes";
+import UserRoutes from "./Routes/UserRoutes";
+
 const MongoStore = require("connect-mongo")(session);
-const BlogRoutes = require("./Routes/BlogRoutes");
-const UserRoutes = require("./Routes/UserRoutes");
-require("./Config/passport")(passport);
-require("dotenv").config();
+
+require("./Config/passport").default.default(passport);
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-mongoose.connect("mongodb://localhost/wikis", {
+connect("mongodb://localhost/wikis", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
   useCreateIndex: true,
 });
-const db = mongoose.connection;
+const db = connection;
 
 db.once("open", () => {
   console.log("Connection to MONGODB established...");
@@ -34,14 +35,14 @@ db.on("error", (err) => {
 app.use(
   session({
     secret: "mYsECretKEy",
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
       // secure: true,
       expires: 10000,
     },
     store: new MongoStore({
-      mongooseConnection: mongoose.connection,
+      mongooseConnection: connection,
       ttl: 10000,
     }),
   })
@@ -63,19 +64,16 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cookieParser());
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname + "/Public")));
-app.set("views", path.join(__dirname + "/Views"));
-app.set("view engine", "ejs");
-
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(cookieParser());
+app.use(json());
+app.use(urlencoded({ extended: false }));
 
 app.use("/api/auth", UserRoutes);
 app.use("/api/blogs", BlogRoutes);
 
 app.listen(PORT, () => console.log(`Server listening on PORT ${PORT}`));
 
-module.exports = app;
+export default app;

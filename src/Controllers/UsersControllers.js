@@ -1,8 +1,7 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const Users = require("../Database/Models/User");
-const Helper = require("../Helpers/Helpers");
-const tokengen = require("../Helpers/TokenGen");
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+import Users from "../Database/Models/User";
+import Helper from "../Helpers/Helpers";
 // const UserValidate = require("../Middleware/Validation/UserValidation");
 
 module.exports = {

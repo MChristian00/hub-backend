@@ -1,12 +1,12 @@
-const Joi = require("joi");
+import { object, string } from "joi";
 
 class UserValidate {
   static async userAddValidate(req, res, next) {
-    const schema = Joi.object().keys({
-      FirstName: Joi.string().min(2).required(),
-      LastName: Joi.string().min(2).required(),
-      Email: Joi.string().email().required(),
-      Password: Joi.string().min(3).required(),
+    const schema = object().keys({
+      FirstName: string().min(2).required(),
+      LastName: string().min(2).required(),
+      Email: string().email().required(),
+      Password: string().min(3).required(),
     });
     schema.validate(req.body, (err) => {
       if (err) {
@@ -30,4 +30,4 @@ class UserValidate {
   // }
 }
 
-module.exports = UserValidate;
+export default UserValidate;
