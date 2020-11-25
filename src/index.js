@@ -35,8 +35,8 @@ db.on("error", (err) => {
 app.use(
   session({
     secret: "mYsECretKEy",
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     cookie: {
       // secure: true,
       expires: 10000,
@@ -64,12 +64,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use(cookieParser());
 app.use(json());
 app.use(urlencoded({ extended: false }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api/auth", UserRoutes);
 app.use("/api/blogs", BlogRoutes);

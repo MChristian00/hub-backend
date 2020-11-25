@@ -6,7 +6,9 @@ import Helper from "../Helpers/Helpers";
 
 module.exports = {
   addUser: async (req, res) => {
-    const { FirstName, LastName, Email, Password } = req.body;
+    const {
+      FirstName, LastName, Email, Password
+    } = req.body;
     // const { error } = UserValidate.useraddValidate(req.body);
     // if (error) res.status(400).send(error.details[0].message);
     try {

@@ -19,6 +19,7 @@
     "no-unused-vars": 0,
     "no-console": 0,
     "func-names": 0,
+    "no-underscore-dangle": 0,
     "curly": ["error", "multi-line"],
     "import/no-unresolved": [2, { "commonjs": true }],
     "no-shadow": ["error", { "allow": ["req", "res", "err"] }],
@@ -35,9 +36,9 @@
       "error",
       {
         "require": {
-          "FunctionDeclaration": true,
-          "MethodDefinition": true,
-          "ClassDeclaration": true
+          "FunctionDeclaration": false,
+          "MethodDefinition": false,
+          "ClassDeclaration": false
         }
       }
     ]
