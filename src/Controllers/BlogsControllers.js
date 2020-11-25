@@ -47,7 +47,6 @@ module.exports = {
 
     const { AuthorID, Content, Title } = req.body;
 
-
     try {
       await User.findOne({ _id: AuthorID }, (err, details) => {
         if (err) Helper.setError(500, err);
@@ -65,7 +64,6 @@ module.exports = {
           if (err) {
             Helper.setError(500, err);
           } else {
-
             Helper.setSuccess(201, "Blog added", blog);
           }
           return Helper.send(res);
@@ -128,9 +126,7 @@ module.exports = {
     await Blog.findById({ _id: ID }, (err, blog) => {
       if (err) Helper.setError(500, err);
       else if (blog.FavBy.find((user) => user === UserID)) {
-        FavList = blog.FavBy.filter((user) => {
-          return user !== UserID;
-        });
+        FavList = blog.FavBy.filter((user) => user !== UserID);
       } else {
         blog.FavBy.push(UserID);
         FavList = blog.FavBy;
@@ -152,9 +148,7 @@ module.exports = {
     await Blog.findById({ _id: ID }, (err, blog) => {
       if (err) Helper.setError(500, err);
       else if (blog.LikedBy.find((user) => user === UserID)) {
-        LikersList = blog.LikedBy.filter((user) => {
-          return user !== UserID;
-        });
+        LikersList = blog.LikedBy.filter((user) => user !== UserID);
       } else {
         blog.LikedBy.push(UserID);
         LikersList = blog.LikedBy;

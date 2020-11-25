@@ -1,12 +1,12 @@
-const mongoose = require("mongoose");
+import { model, Schema } from "mongoose";
 
-module.exports = mongoose.model(
+export default model(
   "Blogs",
-  mongoose.Schema(
+  Schema(
     {
-      _id: mongoose.Schema.Types.ObjectId,
+      _id: Schema.Types.ObjectId,
       AuthorID: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Users",
       },
       Author: {
