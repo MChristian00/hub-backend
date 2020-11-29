@@ -6,12 +6,15 @@ import { connect, connection } from "mongoose";
 import cors from "cors";
 import passport from "passport";
 import session from "express-session";
+import dotenv from "dotenv";
 import BlogRoutes from "./Routes/BlogRoutes";
 import UserRoutes from "./Routes/UserRoutes";
 
+dotenv.config();
+
 const MongoStore = require("connect-mongo")(session);
 
-require("./Config/passport").default.default(passport);
+require("./Config/passport").default(passport);
 
 const app = express();
 const PORT = process.env.PORT || 8080;
