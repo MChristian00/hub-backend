@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const Blog = require("../Database/Models/Blogs");
-const User = require("../Database/Models/User");
-const Helper = require("../Helpers/Helpers");
+const Blog = require("../Database/Models/Blogs").default;
+const User = require("../Database/Models/User").default;
+const Helper = require("../Helpers/Helpers").default;
 
 module.exports = {
   oneBlog: async (req, res) => {
@@ -22,7 +22,7 @@ module.exports = {
         Helper.setSuccess(200, `${blogs.length} Blogs retrieved`, blogs);
       }
       return Helper.send(res);
-    });
+    }).sort({ createdAt: -1 });
     // .select("_id BlogAuthor Content Title FavBy Comments LikedBy createdAt updatedAt");
   },
 
@@ -35,7 +35,7 @@ module.exports = {
         Helper.setSuccess(200, `${blogs.length} User Blogs retrieved`, blogs);
       }
       return Helper.send(res);
-    });
+    }).sort({ createdAt: -1 });
     // .select("_id BlogAuthor Content Title FavBy Comments LikedBy createdAt updatedAt");
   },
 
@@ -51,26 +51,26 @@ module.exports = {
       await User.findOne({ _id: AuthorID }, (err, details) => {
         if (err) Helper.setError(500, err);
         else {
-          newBlog = new Blog({
+          const newBlog = new Blog({
             _id: new mongoose.Types.ObjectId(),
             AuthorID,
             Author: `${details.FirstName} ${details.LastName}`,
             Content,
             Title,
           });
-        }
 
-        Blog.create(newBlog, (err, blog) => {
-          if (err) {
-            Helper.setError(500, err);
-          } else {
-            Helper.setSuccess(201, "Blog added", blog);
-          }
-          return Helper.send(res);
-        });
+          Blog.create(newBlog, (err, blog) => {
+            if (err) {
+              Helper.setError(500, err);
+            } else {
+              Helper.setSuccess(201, "Blog added", blog);
+            }
+            return Helper.send(res);
+          });
+        }
       });
     } catch (error) {
-      Helper.setError(500, err); // Handle Error
+      Helper.setError(500, error); // Handle Error
     }
   },
   updateBlog: async (req, res) => {
@@ -108,7 +108,7 @@ module.exports = {
               if (err) {
                 Helper.setError(500, err);
               } else {
-                Helper.setSuccess(200, "Blog commented", blog);
+                Helper.setSuccess(200, "Commented added", blog);
               }
               return Helper.send(res);
             }
